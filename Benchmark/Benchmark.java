@@ -27,14 +27,12 @@ public class Benchmark
     public long starteZeit()
     {
         datum1 = new Date();            //Erzeugen eines Date Objektes
-        long start = datum1.getTime();  //Zeitstempel des Dateobjektes in Millisekunden
-        return start;                   //Rückgabe des Zeitstempels
+        return datum1.getTime();  //Zeitstempel des Dateobjektes in Millisekunden
     }
     
      public long stoppeZeit()
     {
         datum2 = new Date();            //Erzeugen eines Date Objektes
-        long stop = datum2.getTime();   //Zeitstempel des Dateobjektes in Millisekunden
-        return stop;                    //Rückgabe des Zeitstempels
+        return datum2.getTime();   //Zeitstempel des Dateobjektes in Millisekunden
     }
 }
