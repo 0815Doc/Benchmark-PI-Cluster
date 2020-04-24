@@ -8,7 +8,7 @@
 import java.util.*;
 import java.util.Date;
 // import java.time.DateTime;
-public class Benchmark
+public abstract class Benchmark
 {
     private int anzahlDurchlaeufe;      //Variable der benötigten oder verwendeten Durchläufe
     private Date datum1;                //Startvariable zur Zeitberechnung

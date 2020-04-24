@@ -2,7 +2,5 @@
 comment0.target=Ganzzahl
 comment0.text=\r\n\ Beschreiben\ Sie\ hier\ die\ Klasse\ Ganzzahl.\r\n\ \r\n\ @author\ (Ihr\ Name)\ \r\n\ @version\ (eine\ Versionsnummer\ oder\ ein\ Datum)\r\n
 comment1.params=
-comment1.target=Ganzzahl()
-comment2.params=
-comment2.target=void\ berechneGz()
-numComments=3
+comment1.target=void\ berechneGz()
+numComments=2
