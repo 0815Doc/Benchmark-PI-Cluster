@@ -1,14 +1,6 @@
-------------------------------------------------------------------------
-Dies ist die README-Datei des Projekts. Hier sollten Sie Ihr Projekt
-beschreiben.
-Erzählen Sie dem Leser (jemand, der nichts über dieses Projekt weiss),
-alles, was er/sie wissen muss. Üblicherweise sollte der Kommentar 
-zumindest die folgenden Angaben umfassen:
-------------------------------------------------------------------------
-
-PROJEKTBEZEICHNUNG:
-PROJEKTZWECK:
-VERSION oder DATUM:
+PROJEKTBEZEICHNUNG: PI-Cluster-Benchmark
+PROJEKTZWECK: Test der Leistungsfähigkeit eine PI-Clusters für Ganzahl und Fliekommaberechnungen, single und multithreaded
+VERSION oder DATUM: 01.04.2020
 WIE IST DAS PROJEKT ZU STARTEN:
-AUTOR(EN):
+AUTOR(EN): ms, jh
 BENUTZERHINWEISE:

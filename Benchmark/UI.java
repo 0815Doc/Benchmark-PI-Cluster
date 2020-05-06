@@ -10,18 +10,29 @@ import java.util.Scanner;
                         
 public class UI
 {
-    Benchmark b = new Benchmark();
-    int wert =  0;
-        
+    Benchmark   b    = new Benchmark();
+    int         wert = 0;
+    
+    // statisches Hauptprogramm
+    public static void main(String[] args)
+    {
+        UI emil = new UI();
+        emil.start();
+    }
+    
+
     public void start()
     {
-        int fall = -1;
-        boolean exit = false;
+        int     fall = -1;
+        boolean exit =  false;
+        double  tmp  = -1;
+
         Scanner einlesen = new Scanner(System.in);
             
         while(!exit)
         {
             hauptmenu();
+
             fall = -1;
 
             System.out.print("\n Eingabe: ");
@@ -39,7 +50,7 @@ public class UI
                  // Bildschirm leeren
                    System.out.print('\u000C');
                    exit = true;
-                   break;
+                break;
         
                 case 1: 
                     System.out.print('\u000C'); // Bildschirm leeren
@@ -51,9 +62,11 @@ public class UI
                         wert = einlesen.nextInt();
                         
                     System.out.println("\n Test laeuft...");
+
                     b.setAnzahlDurchlaeufe(wert);
+                    tmp = b.zeitmessungGz()/1000.; 
                         
-                    System.out.println(" Benoetigte Zeit zur Berechnung: "+ zeitmessungGz(b)/1000 + " Sekunden");
+                    System.out.println(" Benoetigte Zeit zur Berechnung: "+ tmp + " Sekunden");
                     
                     System.out.println("\n\n -----------------------");
                     System.out.println("< 0 > Hauptmenu");
@@ -68,12 +81,14 @@ public class UI
                     // ohne print (ohne "ln"), damit der eingegebene Wert hinter dem Text erscheint
                     System.out.print("\n Anzahl der Durchlaeufe? => ");
                     if (einlesen.hasNextInt())
-                    wert = einlesen.nextInt();
+                        wert = einlesen.nextInt();
                 
                     System.out.println("\n Test laeuft...");
+
                     b.setAnzahlDurchlaeufe(wert);
+                    tmp = b.zeitmessungFkz()/1000.; 
                 
-                    System.out.println("Benoetigte Zeit zur Berechnung: "+ zeitmessungFkz(b)/1000 + " Sekunden");
+                    System.out.println("Benoetigte Zeit zur Berechnung: "+ tmp + " Sekunden");
                  
                     System.out.println("\n\n -----------------------");
                     System.out.println("< 0 > Hauptmenu");
@@ -88,8 +103,10 @@ public class UI
                     System.out.println("\n < 1 > Lastberechnung starten");// jede Eingabe startet die Berechnung...Eingabe von Buchstaben führt zum Abbruch
                     if (einlesen.hasNextInt())
                         einlesen.nextInt();
-                      
-                    System.out.println("\n => Benoetigte Durchlaeufe: "+ (int)lastberechnungGz(b));
+
+                    tmp = b.lastberechnungGz();
+
+                    System.out.println("\n => Benoetigte Durchlaeufe: "+ tmp);
                     System.out.println("\n\n -----------------------");
         
                     System.out.print("< 0 > Hauptmenu");
@@ -105,7 +122,7 @@ public class UI
                     if (einlesen.hasNextInt())
                         einlesen.nextInt();
              
-                    System.out.println("\n => Benoetigte Durchlaeufe: "+ (int)lastberechnungFkz(b));
+                    System.out.println("\n => Benoetigte Durchlaeufe: "+ b.lastberechnungFkz());
                     System.out.println("\n\n -----------------------");
         
                     System.out.print("< 0 > Hauptmenu");
@@ -120,7 +137,7 @@ public class UI
                     System.out.println("\n < 1 > Lastberechnung starten");// jede Eingabe startet die Berechnung...Eingabe von Buchstaben führt zum Abbruch
                     if (einlesen.hasNextInt())
                         einlesen.nextInt();
-                    System.out.println("\n => Benoetigte Durchlaeufe: "+ (int)lastberechnungMtGz(b));
+                    System.out.println("\n => Benoetigte Durchlaeufe: "+ b.lastberechnungGz_m());
                     
                     System.out.println("\n\n -----------------------");
         
@@ -137,7 +154,7 @@ public class UI
                     System.out.println("\n < 1 > Lastberechnung starten");// jede Eingabe startet die Berechnung...Eingabe von Buchstaben führt zum Abbruch
                     if (einlesen.hasNextInt())
                         einlesen.nextInt();
-                    System.out.println("\n => Benoetigte Durchlaeufe: "+ (int)lastberechnungMtFkz(b));
+                    System.out.println("\n => Benoetigte Durchlaeufe: "+ b.lastberechnungFkz_m());
                     
                     System.out.println("\n\n -----------------------");
         
@@ -148,13 +165,8 @@ public class UI
             }      
         }
     }
-    
-    public static void main(String[] args)
-    {
-        UI emil = new UI();
-        emil.start();
-    }
-    
+
+
     // Programmpause in Millisekunden
     public void pause(int dauer)
     {
@@ -163,7 +175,8 @@ public class UI
         } catch(Exception e) {}
     }
 
-    // diese Methode erzeugt das Hauptmenu
+
+    // Hauptmenu anzeigen
     public void hauptmenu()
     {
         System.out.print('\u000C'); // Bildschirm leeren
@@ -183,180 +196,5 @@ public class UI
         System.out.println("\n    < 0 > Programm beenden");
         System.out.println("========================================="); 
         
-    }
-    
-    public double zeitmessungGz(Benchmark b)
-    {
-        long startGz = b.starteZeit();
-        b.berechneGz();
-        long stopGz = b.stoppeZeit();
-        double zeitGz = stopGz - startGz;
-        return zeitGz;            
-    }
-    
-    //diese Methode fuehrt die Zeitmessung für Ganzzahlen durch
-    public double zeitmessungMtGz(Benchmark b)
-    {
-        double zeitGz = 0;
-        long startGz = b.starteZeit();
-        Thread thread1 = new Thread(new ThreadGz());
-        thread1.start();
-        Thread thread2 = new Thread(new ThreadGz());
-        thread2.start();
-        Thread thread3 = new Thread(new ThreadGz());
-        thread3.start();
-        
-        try 
-        {
-           thread1.join();
-           // Code der hier steht wird abgearbeitet, wenn der Thread fertig ist.
-           System.out.println("Thread1 fertig");
-           try 
-           {
-               thread2.join();
-               // Code der hier steht wird abgearbeitet, wenn der Thread fertig ist.
-               System.out.println("Thread2 fertig");
-               try 
-               {
-                   thread3.join();
-                   // Code der hier steht wird abgearbeitet, wenn der Thread fertig ist.
-                   System.out.println("Thread3 fertig"); 
-                   long stopGz = b.stoppeZeit();
-                   zeitGz = stopGz - startGz;
-                   System.out.println(" Zeit" + zeitGz);
-                    
-               } 
-               catch (InterruptedException e) 
-               {
-                   // Thread wurde abgebrochen
-               }
-           } 
-           catch (InterruptedException e) 
-           {
-                   // Thread wurde abgebrochen
-           }
-        } 
-        catch (InterruptedException e) 
-        {
-           // Thread wurde abgebrochen
-        }
-        return zeitGz;
-    }
-     
-    // diese Methode fuehrt die Zeitmessung für Fliesskommazahlen durch
-    public double zeitmessungFkz(Benchmark b)
-    {
-        long startFkz = b.starteZeit();
-        b.berechneFkz();
-        long stopFkz = b.stoppeZeit();
-        double zeitFkz = stopFkz - startFkz;
-        return zeitFkz;
-    }
-    
-    // diese Methode fuehrt die Zeitmessung für Multithread Fliesskommazahlen durch
-    public double zeitmessungMtFkz(Benchmark b)
-    {
-        double zeitFkz = 0;
-        long startFkz = b.starteZeit();
-        Thread thread1 = new Thread(new ThreadFkz());
-        thread1.start();
-        Thread thread2 = new Thread(new ThreadFkz());
-        thread2.start();
-        Thread thread3 = new Thread(new ThreadFkz());
-        thread3.start();
-        
-        try 
-        {
-           thread1.join();
-           // Code der hier steht wird abgearbeitet, wenn der Thread fertig ist.
-           System.out.println("Thread1 fertig");
-           try 
-           {
-               thread2.join();
-               // Code der hier steht wird abgearbeitet, wenn der Thread fertig ist.
-               System.out.println("Thread2 fertig");
-               try 
-               {
-                   thread3.join();
-                   // Code der hier steht wird abgearbeitet, wenn der Thread fertig ist.
-                   System.out.println("Thread3 fertig"); 
-                   long stopFkz = b.stoppeZeit();
-                   zeitFkz = stopFkz - startFkz;
-                   System.out.println(" Zeit" + zeitFkz);  
-               } 
-               catch (InterruptedException e) 
-               {
-                   // Thread wurde abgebrochen
-               }
-           } 
-           catch (InterruptedException e) 
-           {
-                   // Thread wurde abgebrochen
-           }
-        } 
-        catch (InterruptedException e) 
-        {
-           // Thread wurde abgebrochen
-        }
-        return zeitFkz;
-    }
-    
-    //diese Methode fuehrt die Lastberechnung für Ganzzahlen durch
-    public double lastberechnungGz(Benchmark b)
-    {
-        int dauerGz = 3000;
-        System.out.println("\n Lastberechnung fuer " + dauerGz + "ms laeuft...");
-        
-        wert = 100000;
-        b.setAnzahlDurchlaeufe(wert);
-        
-        double faktorGz = zeitmessungGz(b)/dauerGz;
-        double dlNeuGz = wert / faktorGz;
-        // System.out.println("\n => Benoetigte Durchlaeufe: "+ (int)dlNeuGz);
-        return dlNeuGz;
-    }
-    
-    //diese Methode fuehrt die Lastberechnung für Ganzzahlen (Multithread) durch
-    public double lastberechnungMtGz(Benchmark b)
-    {
-        int dauerGz = 3000;
-        System.out.println("\n Lastberechnung fuer " + dauerGz + "ms laeuft...");
-        
-        wert = 100000;
-        // b.setAnzahlDurchlaeufe(wert);
-        
-        double faktorGz = zeitmessungMtGz(b)/dauerGz;
-        double dlNeuGz = wert / faktorGz;
-        // System.out.println("\n => Benoetigte Durchlaeufe: "+ (int)dlNeuGz);
-         return dlNeuGz;
-    }
-    //diese Methode fuehrt die Lastberechnung für Fliesskommazahlen durch
-    public double lastberechnungFkz(Benchmark b)
-    {
-        int dauerFkz = 3000;
-        System.out.println("\n Lastberechnung fuer " + dauerFkz + "ms laeuft...");
-        
-        wert = 100000;
-        b.setAnzahlDurchlaeufe(wert);
-        
-        double faktorFkz = zeitmessungFkz(b)/dauerFkz;
-        double dlNeuFkz = wert / faktorFkz;
-        
-        return dlNeuFkz;
-    }
-    
-    //diese Methode fuehrt die Lastberechnung für Fliesskommazahlen (Multithread) durch
-    public double lastberechnungMtFkz(Benchmark b)
-    {
-        int dauerFkz = 3000;
-        System.out.println("\n Lastberechnung fuer " + dauerFkz + "ms laeuft...");
-        
-        wert = 100000;
-        // b.setAnzahlDurchlaeufe(wert);
-        
-        double faktorFkz = zeitmessungMtFkz(b)/dauerFkz;
-        double dlNeuFkz = wert / faktorFkz;
-        
-        return dlNeuFkz;
     }
 }
