@@ -10,7 +10,11 @@ import java.util.Scanner;
                         
 public class UI
 {
-    Benchmark   b    = new Benchmark();
+    // Benchmark   b    = new Benchmark();
+    Ganzzahl            g    = new Ganzzahl();
+    Ganzzahl_m          gm   = new Ganzzahl_m();
+    Fliesskommazahl     f    = new Fliesskommazahl();
+    Fliesskommazahl_m   fm   = new Fliesskommazahl_m();
     int         wert = 0;
     
     // statisches Hauptprogramm
@@ -62,9 +66,10 @@ public class UI
                         wert = einlesen.nextInt();
                         
                     System.out.println("\n Test laeuft...");
-
-                    b.setAnzahlDurchlaeufe(wert);
-                    tmp = b.zeitmessungGz()/1000.; 
+                    
+                    g.setAnzahlThreads(1);
+                    g.setAnzahlDurchlaeufe(wert);
+                    tmp = g.zeitmessung()/1000.; 
                         
                     System.out.println(" Benoetigte Zeit zur Berechnung: "+ tmp + " Sekunden");
                     
@@ -85,8 +90,8 @@ public class UI
                 
                     System.out.println("\n Test laeuft...");
 
-                    b.setAnzahlDurchlaeufe(wert);
-                    tmp = b.zeitmessungFkz()/1000.; 
+                    f.setAnzahlDurchlaeufe(wert);
+                    tmp = f.zeitmessung()/1000.; 
                 
                     System.out.println("Benoetigte Zeit zur Berechnung: "+ tmp + " Sekunden");
                  
@@ -103,8 +108,9 @@ public class UI
                     System.out.println("\n < 1 > Lastberechnung starten");// jede Eingabe startet die Berechnung...Eingabe von Buchstaben führt zum Abbruch
                     if (einlesen.hasNextInt())
                         einlesen.nextInt();
-
-                    tmp = b.lastberechnungGz();
+                        
+                    g.setAnzahlThreads(1);       
+                    tmp = g.lastberechnung();
 
                     System.out.println("\n => Benoetigte Durchlaeufe: "+ tmp);
                     System.out.println("\n\n -----------------------");
@@ -122,7 +128,7 @@ public class UI
                     if (einlesen.hasNextInt())
                         einlesen.nextInt();
              
-                    System.out.println("\n => Benoetigte Durchlaeufe: "+ b.lastberechnungFkz());
+                    System.out.println("\n => Benoetigte Durchlaeufe: "+ f.lastberechnung());
                     System.out.println("\n\n -----------------------");
         
                     System.out.print("< 0 > Hauptmenu");
@@ -137,7 +143,7 @@ public class UI
                     System.out.println("\n < 1 > Lastberechnung starten");// jede Eingabe startet die Berechnung...Eingabe von Buchstaben führt zum Abbruch
                     if (einlesen.hasNextInt())
                         einlesen.nextInt();
-                    System.out.println("\n => Benoetigte Durchlaeufe: "+ b.lastberechnungGz_m());
+                    System.out.println("\n => Benoetigte Durchlaeufe: "+ g.lastberechnung());
                     
                     System.out.println("\n\n -----------------------");
         
@@ -154,7 +160,7 @@ public class UI
                     System.out.println("\n < 1 > Lastberechnung starten");// jede Eingabe startet die Berechnung...Eingabe von Buchstaben führt zum Abbruch
                     if (einlesen.hasNextInt())
                         einlesen.nextInt();
-                    System.out.println("\n => Benoetigte Durchlaeufe: "+ b.lastberechnungFkz_m());
+                    System.out.println("\n => Benoetigte Durchlaeufe: "+ fm.lastberechnung());
                     
                     System.out.println("\n\n -----------------------");
         
