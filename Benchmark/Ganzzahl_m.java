@@ -9,8 +9,7 @@ public class Ganzzahl_m extends Benchmark implements Runnable
 {
     private long ergebnis;
     private int threadIndex;
-    
-    
+        
     public Ganzzahl_m(UI ui, int k)
     {
         super(ui);
@@ -48,9 +47,10 @@ public class Ganzzahl_m extends Benchmark implements Runnable
         if ( temp == anzahlT)      
         {
             stoppeZeit();
-            double tmp = zeitmessung()/1000.; 
-            System.out.println(" Benoetigte Zeit zur Berechnung: "+ tmp + " Sekunden");
-            System.out.println(" Rechenleistung: "+ ui.gerundet.format(ui.getAnzahlDurchlaeufe()/tmp) + " IOPS");
+            // double tmp = zeitmessung()/1000.; 
+            double tmp = getGestoppteZeit()/1000.;
+            System.out.println("     Benoetigte Zeit zur Berechnung: "+ tmp + " Sekunden.");
+            System.out.println("     Multithread Rechenleistung: "+ ui.gerundet.format(ui.getAnzahlDurchlaeufe()/tmp) + " IOPS.");
         }
         // System.out.println();
     }
@@ -67,6 +67,7 @@ public class Ganzzahl_m extends Benchmark implements Runnable
         {
             threads[k] = new Thread(new Ganzzahl_m(ui, k));             
             threads[k].start();                       
-        } 
+        }
     }
+    
 }

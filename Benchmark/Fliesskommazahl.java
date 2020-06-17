@@ -17,6 +17,7 @@ public class Fliesskommazahl extends Benchmark
     public void rechne()
     {
         ergebnis = 0;
+        starteZeit();
         for (int i = 0; i < ui.getAnzahlDurchlaeufe(); i++)
         {
             for (int j = 0; j < 100000; j++)
@@ -24,5 +25,6 @@ public class Fliesskommazahl extends Benchmark
                 ergebnis +=  0.123 * j;
             }
         }
+        stoppeZeit();
     }
 }

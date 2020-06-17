@@ -23,7 +23,7 @@ public class Fliesskommazahl_m extends Benchmark implements Runnable
         int anzahl = ui.getAnzahlDurchlaeufe()/anzahlT;
         int temp = 0;       
         
-        for (int i = 0; i < ui.getAnzahlDurchlaeufe(); i++)
+        for (int i = 0; i < anzahl; i++)
         {
             for (int j = 0; j < 100000; j++)
             {
@@ -32,25 +32,27 @@ public class Fliesskommazahl_m extends Benchmark implements Runnable
         }
         
         ui.setThreadStatus(threadIndex, true);
-        System.out.println("Thread"+ name + " beendet:"+ ergebnis +" + "+ anzahl);
-        System.out.print("Status "+ threadIndex + " ");
         
         for(int i=0 ; i < anzahlT;i++)
         {
             
-            if ( !ui.getThreadStatus(i))
+            if (!ui.getThreadStatus(i))
             {                
                 break;
             } 
-            temp++;
+            temp++; //temp wird nur erhöht, wenn Thread abgeschlossen!
         }
         
+        // Wenn alle Threads abgeschlossen wird die Zeit gestoppt 
         if ( temp == anzahlT)      
         {
-            System.out.print("erledigt");
             stoppeZeit();
+            double tmp = zeitmessung()/1000.; 
+            System.out.println("     Benoetigte Zeit zur Berechnung: "+ tmp + " Sekunden.");
+            System.out.println("     Multithread Rechenleistung: "+ ui.gerundet.format(ui.getAnzahlDurchlaeufe()/tmp) + " FOPS.");
         }
-        System.out.println();
+        
+        // System.out.println();
     }
     
     public void rechne()
