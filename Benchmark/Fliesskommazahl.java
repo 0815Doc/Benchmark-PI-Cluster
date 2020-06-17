@@ -7,19 +7,21 @@
  */
 public class Fliesskommazahl extends Benchmark
 {
-    public Fliesskommazahl()
+    private double ergebnis;
+    
+    public Fliesskommazahl(UI ui)
     {
-        super();
+        super(ui);
     }
     
     public void rechne()
     {
-        ergebnisFkz = 0;
-        for (int i = 0; i < getAnzahlDurchlaeufe(); i++)
+        ergebnis = 0;
+        for (int i = 0; i < ui.getAnzahlDurchlaeufe(); i++)
         {
             for (int j = 0; j < 100000; j++)
             {
-                ergebnisFkz +=  0.123 * j;
+                ergebnis +=  0.123 * j;
             }
         }
     }
