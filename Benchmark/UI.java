@@ -391,8 +391,8 @@ public class UI
         System.out.println("\n  Lastberechnung (benoetigte Durchlaeufe fuer 3 Sekunden Laufzeit ermitteln)"); 
         System.out.println("    < 5 > Ganzahl");
         System.out.println("    < 6 > Fliesskomma");
-        System.out.println("    < 7 > MultiGanzahl --> ohne Funktion");
-        System.out.println("    < 8 > MultiFliesskomma --> ohne Funktion");
+        System.out.println("    < 7 > MultiGanzahl");
+        System.out.println("    < 8 > MultiFliesskomma");
        
         
         System.out.println("\n    < 0 > Programm beenden");
