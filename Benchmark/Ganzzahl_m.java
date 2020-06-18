@@ -30,7 +30,7 @@ public class Ganzzahl_m extends Benchmark implements Runnable
                 ergebnis +=  j;
             }
         } 
-        
+
         ui.setThreadStatus(threadIndex, true);
                 
         for(int i=0 ; i < anzahlT;i++)
@@ -42,13 +42,13 @@ public class Ganzzahl_m extends Benchmark implements Runnable
             } 
             temp++; //temp wird nur erhöht, wenn Thread abgeschlossen!
         }
-        
+
         // Wenn alle Threads abgeschlossen, dann wird die Zeit gestoppt                
         if ( temp == anzahlT)      
         {
-            stoppeZeit();
-            // double tmp = zeitmessung()/1000.; 
+            stoppeZeit();           
             double tmp = getGestoppteZeit()/1000.;
+            ui.setGestoppteZeit(tmp); 
             System.out.println("     Benoetigte Zeit zur Berechnung: "+ tmp + " Sekunden.");
             System.out.println("     Multithread Rechenleistung: "+ ui.gerundet.format(ui.getAnzahlDurchlaeufe()/tmp) + " IOPS.");
         }

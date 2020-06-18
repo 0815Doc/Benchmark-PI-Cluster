@@ -15,12 +15,14 @@ public class UI
     private Ganzzahl          g ;
     private Fliesskommazahl_m   fm ;
     private Fliesskommazahl   f ;
-    private int         wert = 0;
+    private int wert                       = 0;
     protected DecimalFormat gerundet = new DecimalFormat("#0");
     private boolean[] threadStatus;
-    private static int anzahlThreads       = 1;
-    private int anzahlDurchlaeufe   = 10000;
-    private static int wunschDauer = 3000;
+    private int anzahlThreads              = 1;
+    private int anzahlDurchlaeufe          = 10000;
+    private static int wunschDauer         = 10000;
+    private static int uebergabeThread     = 0;
+    private double gestoppteZeit;
     
     public UI()
     {
@@ -29,6 +31,11 @@ public class UI
         fm = new Fliesskommazahl_m(this, 0);
         f = new Fliesskommazahl(this);
         
+    }
+    
+    public void setGestoppteZeit(double wert)
+    {
+       gestoppteZeit = wert; 
     }
     
     public void setAnzahlDurchlaeufe(int anzahl)
@@ -73,12 +80,13 @@ public class UI
             System.out.print('\u000C');
             for (int i = 0 ; i< args.length;i++)
             {
+                
                 switch (args[i])
                 {
                     case "-a": 
                      //                        
-                       anzahlThreads = Integer.parseInt(args[i+1]);
-                       System.out.println("Anzahl Threads" + anzahlThreads);
+                       uebergabeThread = Integer.parseInt(args[i+1]);
+                       System.out.println("Anzahl Threads = " + uebergabeThread);
                        i++;
                        
                     break;
@@ -87,7 +95,7 @@ public class UI
                      // Abfrage der Zeit
                        wunschDauer = Integer.parseInt(args[i+1]);
                        i++;
-                       System.out.println("Zeit = "+ wunschDauer);
+                       System.out.println("Zeit = "+ wunschDauer+ "ms.");
                        
                     break;
                 }
@@ -102,17 +110,26 @@ public class UI
     
     public void automode()
     {
-        double  dauer       = 10000;
+        if (uebergabeThread == 0)
+        {
+            setAnzahlThreads(4);
+        }
+        else
+        {
+            setAnzahlThreads(uebergabeThread);
+        }
+        
+        // double  dauer       = 10000;
         anzahlDurchlaeufe   = 10000;
         
         // Durchläufe für 10 Sekunden Laufzeit integer Singlethread
         g.rechne();
-        double faktor = g.getGestoppteZeit() / dauer; 
-        long temp   =   (long)(anzahlDurchlaeufe / faktor);
-        anzahlDurchlaeufe = (int) temp;
+        double faktor =  (double)wunschDauer / g.zeitmessung() ; 
+        double temp   =   (anzahlDurchlaeufe * faktor);
+        anzahlDurchlaeufe =  (int)temp;
         System.out.println("Integer");
-        System.out.println("Für eine Laufzeit von 10 Sekunden werden "+ anzahlDurchlaeufe + " Durchlaeufe benötigt.");      
-        
+        System.out.println("Für eine Laufzeit von " + wunschDauer/1000 +" Sekunden werden "+ anzahlDurchlaeufe + " Durchlaeufe benötigt.");      
+        System.out.println();
             //Rechne 10 Sekunden Singlethread --> IOPS
         System.out.println("Starte Singlethread Test mit "+ anzahlDurchlaeufe + " Durchlaeufen....");        
         g.rechne();
@@ -120,32 +137,41 @@ public class UI
         System.out.println("     Benoetigte Zeit zur Berechnung: "+ zeit + " Sekunden.");
         System.out.println("     Singelthread Rechenleistung: "+ gerundet.format(anzahlDurchlaeufe/zeit) + " IOPS.");        
         
-            //Rechne 10 Sekunden Multithread (4)--> IOPS
-        setAnzahlThreads(4);                    
-        System.out.println("Starte Multithread Test mit "+ anzahlDurchlaeufe + " Durchlaeufen und 4 Threads....");
+            //Rechne 10 Sekunden Multithread (4)--> IOPS                    
+        System.out.println("Starte Multithread Test mit "+ anzahlDurchlaeufe + " Durchlaeufen und " + getAnzahlThreads() +" Threads....");
         gm.rechne();
         
         pause(10000);
-        System.out.println();        
+        System.out.println();
+        
+        setAnzahlThreads(0);
+        if (uebergabeThread == 0)
+        {
+            setAnzahlThreads(4);
+        }
+        else
+        {
+            setAnzahlThreads(uebergabeThread);
+        }
         
         // Durchläufe für 10 Sekunden Laufzeit double Singelthread
         anzahlDurchlaeufe = 10000;
         f.rechne();
-        faktor = f.getGestoppteZeit() / dauer; 
-        temp   =   (long)(anzahlDurchlaeufe / faktor);
-        anzahlDurchlaeufe = (int) temp;
+        faktor =  (double)wunschDauer / f.getGestoppteZeit() ;
+        temp   =  (anzahlDurchlaeufe * faktor);
+        anzahlDurchlaeufe =  (int)temp;
         System.out.println("Double");
-        System.out.println("Für eine Laufzeit von 10 Sekunden werden "+ anzahlDurchlaeufe + " Durchlaeufe benötigt.");
-        
+        System.out.println("Für eine Laufzeit von " + wunschDauer/1000 + " Sekunden werden "+ anzahlDurchlaeufe + " Durchlaeufe benötigt.");
+        System.out.println();
             //Rechne 10 Sekunden Singlethread --> FOPS
         System.out.println("Starte Singlethread Test mit "+ anzahlDurchlaeufe + " Durchlaeufen....");        
         f.rechne();
-        zeit = f.getGestoppteZeit()/1000.;                    
+        zeit = f.getGestoppteZeit()/1000.;
         System.out.println("     Benoetigte Zeit zur Berechnung: "+ zeit + " Sekunden.");
         System.out.println("     Singelthread Rechenleistung: "+ gerundet.format(anzahlDurchlaeufe/zeit) + " FOPS.");        
             //Rechne 10 Sekunden Multithread (4)--> FOPS
-        setAnzahlThreads(4);                    
-        System.out.println("Starte Multithread Test mit "+ anzahlDurchlaeufe + " Durchlaeufen und 4 Threads....");
+                           
+        System.out.println("Starte Multithread Test mit "+ anzahlDurchlaeufe + " Durchlaeufen und " + getAnzahlThreads() +" Threads....");
         fm.rechne();
         
         pause(10000);
@@ -325,8 +351,8 @@ public class UI
                         wert = einlesen.nextInt();
                     setAnzahlThreads(wert);
                     System.out.println("\n < 1 > Lastberechnung starten");// jede Eingabe startet die Berechnung...Eingabe von Buchstaben führt zum Abbruch
-                    if (einlesen.hasNextInt())
-                        einlesen.nextInt();
+                    // if (einlesen.hasNextInt())
+                        // einlesen.nextInt();
                     System.out.println("\n =>  Benoetigte Durchlaeufe: "+ lastberechnungFm());                    
                     pause(5000);
                     System.out.println("\n\n -----------------------");        
@@ -405,13 +431,13 @@ public class UI
     public long lastberechnungGm()
     {
         double  dauer       = 3000;
-        anzahlDurchlaeufe   = 10000;
+        anzahlDurchlaeufe   = 100000;
 
         System.out.println("\n Lastberechnung fuer " + dauer + "ms laeuft...");
                 
         gm.rechne();
-        
-        double faktor = gm.getGestoppteZeit() / dauer;
+        pause(5000);
+        double faktor =  gestoppteZeit /(dauer/1000) ;
 
         return (int)(anzahlDurchlaeufe / faktor);
     } 
@@ -424,8 +450,8 @@ public class UI
         System.out.println("\n Lastberechnung fuer " + dauer + "ms laeuft...");
                 
         fm.rechne();
-        
-        double faktor = fm.getGestoppteZeit() / dauer;
+        pause(5000);
+        double faktor = gestoppteZeit / (dauer/1000);
 
         return (int)(anzahlDurchlaeufe / faktor);
     } 

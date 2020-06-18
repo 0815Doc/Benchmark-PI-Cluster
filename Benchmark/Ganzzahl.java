@@ -5,7 +5,7 @@
  * @author (Ihr Name) 
  * @version (eine Versionsnummer oder ein Datum)
  */
-public class Ganzzahl extends Benchmark //implements Runnable
+public class Ganzzahl extends Benchmark 
 {
     long ergebnis = 0;
     
@@ -24,7 +24,7 @@ public class Ganzzahl extends Benchmark //implements Runnable
             {
                 ergebnis +=  j;
             }
-        }
+        }        
         stoppeZeit();
     }    
 }

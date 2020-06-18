@@ -26,5 +26,6 @@ public class Fliesskommazahl extends Benchmark
             }
         }
         stoppeZeit();
+        
     }
 }

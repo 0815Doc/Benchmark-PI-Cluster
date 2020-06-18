@@ -6,8 +6,6 @@
  * @version (eine Versionsnummer oder ein Datum)
  */
 import java.util.*;
-import java.util.Date;
-// import java.time.DateTime;
 
 public abstract class Benchmark
 {
@@ -15,8 +13,8 @@ public abstract class Benchmark
     protected int     anzahlThreads;         //Anzahl der verwendeten Threads
     protected UI ui;
     
-    private static long gestoppteZeit;
-    private static long endzeit;
+    private long gestoppteZeit;
+    private long endzeit;
     private static long startzeit;
         
     public Benchmark(UI ui)
@@ -34,7 +32,7 @@ public abstract class Benchmark
         startzeit = System.currentTimeMillis();
     }
         
-    public static void stoppeZeit()
+    public void stoppeZeit()
     {
         endzeit = System.currentTimeMillis();
         gestoppteZeit = endzeit - startzeit;
@@ -44,7 +42,15 @@ public abstract class Benchmark
     {
         return gestoppteZeit;
     }
-        
+    
+    public long getStartZeit()
+    {
+        return startzeit;
+    }
+    public long getEndZeit()
+    {
+        return endzeit;
+    }    
     // Zeitmessung 
     public long zeitmessung()
     {

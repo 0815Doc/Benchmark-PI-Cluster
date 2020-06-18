@@ -47,7 +47,9 @@ public class Fliesskommazahl_m extends Benchmark implements Runnable
         if ( temp == anzahlT)      
         {
             stoppeZeit();
-            double tmp = zeitmessung()/1000.; 
+            // double tmp = zeitmessung()/1000.; 
+            double tmp = getGestoppteZeit()/1000.;
+            ui.setGestoppteZeit(tmp);
             System.out.println("     Benoetigte Zeit zur Berechnung: "+ tmp + " Sekunden.");
             System.out.println("     Multithread Rechenleistung: "+ ui.gerundet.format(ui.getAnzahlDurchlaeufe()/tmp) + " FOPS.");
         }
